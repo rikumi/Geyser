@@ -265,7 +265,7 @@ public class GeyserImpl implements GeyserApi {
         GeyserLogger logger = bootstrap.getGeyserLogger();
         GeyserConfiguration config = bootstrap.getGeyserConfig();
 
-        ScoreboardUpdater.init();
+        // ScoreboardUpdater.init();
 
         SkinProvider.registerCacheImageTask(this);
 
