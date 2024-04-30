@@ -126,12 +126,7 @@ public class BedrockInteractTranslator extends PacketTranslator<InteractPacket> 
                     } else {
                         InventoryUtils.openInventory(session, session.getPlayerInventory());
                     }
-                } else {
-                    // Case: Player opens a player inventory, while we think it shouldn't have!
-                    // Close all inventories, reset to player inventory.
-                    InventoryUtils.closeInventory(session, session.getOpenInventory().getJavaId(), false);
                 }
-                break;
         }
     }
 }

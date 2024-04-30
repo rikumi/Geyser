@@ -175,7 +175,7 @@ public final class Scoreboard {
                 boolean update = score.shouldUpdate();
 
                 if (update) {
-                    score.update(objective.getObjectiveName());
+                    score.update(objective);
                 }
 
                 if (score.getUpdateType() != REMOVE && update) {
@@ -216,7 +216,7 @@ public final class Scoreboard {
             }
 
             if (score.shouldUpdate()) {
-                score.update(objective.getObjectiveName());
+                score.update(objective);
                 add = true;
             }
 
