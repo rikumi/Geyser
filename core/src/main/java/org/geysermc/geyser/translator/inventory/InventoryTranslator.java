@@ -28,6 +28,7 @@ package org.geysermc.geyser.translator.inventory;
 import com.github.steveice10.mc.protocol.data.game.entity.metadata.ItemStack;
 import com.github.steveice10.mc.protocol.data.game.inventory.ContainerType;
 import com.github.steveice10.mc.protocol.data.game.recipe.Ingredient;
+import com.github.steveice10.opennbt.tag.builtin.BooleanTag;
 import com.github.steveice10.opennbt.tag.builtin.IntTag;
 import com.github.steveice10.opennbt.tag.builtin.Tag;
 import it.unimi.dsi.fastutil.ints.*;
@@ -443,7 +444,7 @@ public abstract class InventoryTranslator {
         affectedSlots.addAll(plan.getAffectedSlots());
         return acceptRequest(request, makeContainerEntries(session, inventory, affectedSlots));
     }
-    
+
     public ItemStackResponse translateCraftingRequest(GeyserSession session, Inventory inventory, ItemStackRequest request) {
         int resultSize = 0;
         int timesCrafted;
@@ -911,7 +912,9 @@ public abstract class InventoryTranslator {
             int durability = 0;
             if (itemStack.getNbt() != null) {
                 Tag damage = itemStack.getNbt().get("Damage");
-                if (damage instanceof IntTag) {
+                Tag unbreakable = itemStack.getNbt().get("Unbreakable");
+                boolean isUnbreakable = unbreakable instanceof BooleanTag && ((BooleanTag) unbreakable).getValue();
+                if (damage instanceof IntTag && !isUnbreakable) {
                     durability = ItemUtils.getCorrectBedrockDurability(itemStack.asItem(), ((IntTag) damage).getValue());
                 }
             }
