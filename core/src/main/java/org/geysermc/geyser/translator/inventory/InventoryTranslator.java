@@ -28,7 +28,7 @@ package org.geysermc.geyser.translator.inventory;
 import com.github.steveice10.mc.protocol.data.game.entity.metadata.ItemStack;
 import com.github.steveice10.mc.protocol.data.game.inventory.ContainerType;
 import com.github.steveice10.mc.protocol.data.game.recipe.Ingredient;
-import com.github.steveice10.opennbt.tag.builtin.BooleanTag;
+import com.github.steveice10.opennbt.tag.builtin.ByteTag;
 import com.github.steveice10.opennbt.tag.builtin.IntTag;
 import com.github.steveice10.opennbt.tag.builtin.Tag;
 import it.unimi.dsi.fastutil.ints.*;
@@ -913,7 +913,7 @@ public abstract class InventoryTranslator {
             if (itemStack.getNbt() != null) {
                 Tag damage = itemStack.getNbt().get("Damage");
                 Tag unbreakable = itemStack.getNbt().get("Unbreakable");
-                boolean isUnbreakable = unbreakable instanceof BooleanTag && ((BooleanTag) unbreakable).getValue();
+                boolean isUnbreakable = unbreakable instanceof ByteTag && ((ByteTag) unbreakable).getValue() == 1;
                 if (damage instanceof IntTag && !isUnbreakable) {
                     durability = ItemUtils.getCorrectBedrockDurability(itemStack.asItem(), ((IntTag) damage).getValue());
                 }
