@@ -143,11 +143,11 @@ public final class ItemTranslator {
         nbt = translateDisplayProperties(session, nbt, bedrockItem);
 
         if (nbt != null) {
-            Tag hideFlags = nbt.get("HideFlags");
-            if (hideFlags == null || !hasFlagPresent(hideFlags, HIDE_ATTRIBUTES_FLAG)) {
-                // only add if the hide attribute modifiers flag is not present
+            // Ignore HideFlags - rikumi
+            // Tag hideFlags = nbt.get("HideFlags");
+            // if (hideFlags == null || !hasFlagPresent(hideFlags, HIDE_ATTRIBUTES_FLAG)) {
                 addAttributeLore(nbt, session.locale());
-            }
+            // }
         }
 
         if (session.isAdvancedTooltips()) {
@@ -255,6 +255,17 @@ public final class ItemTranslator {
             for (StringTag modifier : modifiers) {
                 lore.add(modifier);
             }
+        }
+
+        if (nbt.get("Unbreakable") instanceof ByteTag byteTag && byteTag.getValue() == 1
+            || nbt.get("Unbreakable") instanceof IntTag intTag && intTag.getValue() == 1
+            || nbt.get("Unbreakable") instanceof ShortTag shortTag && shortTag.getValue() == 1) {
+            Component slotComponent = Component.text()
+                    .resetStyle()
+                    .color(NamedTextColor.BLUE)
+                    .append(Component.translatable("item.unbreakable"))
+                    .build();
+            lore.add(new StringTag("", MessageTranslator.convertMessage(slotComponent, language)));
         }
 
         displayTag.put(lore);
@@ -418,6 +429,9 @@ public final class ItemTranslator {
             for (Tag javaTag : tag.values()) {
                 Object translatedTag = translateToBedrockNBT(javaTag);
                 if (translatedTag == null)
+                    continue;
+
+                if (javaTag.getName().equals("Damage") && tag.get("Unbreakable") instanceof ByteTag byteTag && byteTag.getValue() == 1)
                     continue;
 
                 builder.put(javaTag.getName(), translatedTag);
